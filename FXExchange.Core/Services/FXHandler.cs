@@ -11,18 +11,15 @@ namespace FXExchange.Core.Services
         private readonly IFXValidationService _fxValidationService;
         private readonly IFXCalculationService _fxCalculationService;
         private readonly IFXRatesRetrievalService _fxRatesRetrievalService;
-        private readonly ILogger _logger;
 
         public FXHandler(
             IFXValidationService fxValidationService,
             IFXCalculationService fxCalculationService,
-            IFXRatesRetrievalService fxRatesRetrievalService,
-            ILogger logger)
+            IFXRatesRetrievalService fxRatesRetrievalService)
         {
             _fxValidationService = fxValidationService;
             _fxCalculationService = fxCalculationService;
             _fxRatesRetrievalService = fxRatesRetrievalService;
-            _logger = logger;
         }
 
         ///<inheritdoc />
