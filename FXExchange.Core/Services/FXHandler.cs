@@ -28,7 +28,7 @@ namespace FXExchange.Core.Services
         ///<inheritdoc />
         public async Task<Result<FXResponse>> Handle(string[] args)
         {
-            var validationResults = _fxValidationService.TryParse(args, out FXRequest fxInput);
+            var validationResults = _fxValidationService.TryParse(args, out FXRequest fxRequest);
             if (!validationResults.IsValid)
             {
                 return Result<FXResponse>.Failure(validationResults.ErrorMessage);
@@ -38,9 +38,9 @@ namespace FXExchange.Core.Services
             {
                 var exchangeRates = await _fxRatesRetrievalService.GetRatesAsync(BaseCurrency);
                 double exchangedAmount = _fxCalculationService.Calculate(
-                    fxInput.MainCurrency,
-                    fxInput.MoneyCurrency,
-                    fxInput.Amount,
+                    fxRequest.MainCurrency,
+                    fxRequest.MoneyCurrency,
+                    fxRequest.Amount,
                     exchangeRates);
                 return Result<FXResponse>.Success(new FXResponse { ExchangedAmount = exchangedAmount });
             }

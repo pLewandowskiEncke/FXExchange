@@ -41,9 +41,9 @@ namespace FXExchange.Tests.Services
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
-            var fxInput = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
+            var fxRequest = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
             _mocker.GetMock<IFXValidationService>()
-                .Setup(x => x.TryParse(args, out fxInput))
+                .Setup(x => x.TryParse(args, out fxRequest))
                 .Returns(new FXValidationResult { IsValid = true });
             _mocker.GetMock<IFXRatesRetrievalService>()
                 .Setup(x => x.GetRatesAsync(It.IsAny<string>()))
@@ -62,14 +62,14 @@ namespace FXExchange.Tests.Services
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
-            var fxInput = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
+            var fxRequest = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
             var exchangeRates = new Dictionary<string, double>
             {
                 { "EUR", 743.94 },
                 { "USD", 663.11 }
             };
             _mocker.GetMock<IFXValidationService>()
-                .Setup(x => x.TryParse(args, out fxInput))
+                .Setup(x => x.TryParse(args, out fxRequest))
                 .Returns(new FXValidationResult { IsValid = true });
             _mocker.GetMock<IFXRatesRetrievalService>()
                 .Setup(x => x.GetRatesAsync(It.IsAny<string>()))
