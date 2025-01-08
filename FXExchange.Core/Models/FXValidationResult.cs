@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace FXExchange.Models
+namespace FXExchange.Core.Models
 {
     [ExcludeFromCodeCoverage]
     public class FXValidationResult

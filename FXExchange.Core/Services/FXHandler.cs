@@ -1,8 +1,7 @@
-﻿using FXExchange.Infrastructure;
-using FXExchange.Interfaces;
-using FXExchange.Models;
+﻿using FXExchange.Core.Interfaces;
+using FXExchange.Core.Models;
 
-namespace FXExchange.Services
+namespace FXExchange.Core.Services
 {
 
     ///<inheritdoc />
@@ -27,13 +26,12 @@ namespace FXExchange.Services
         }
 
         ///<inheritdoc />
-        public async Task Handle(string[] args)
+        public async Task<Result<FXResponse>> Handle(string[] args)
         {
-            var validationResults = _fxValidationService.TryParse(args, out FXInput fxInput);
+            var validationResults = _fxValidationService.TryParse(args, out FXRequest fxInput);
             if (!validationResults.IsValid)
             {
-                _logger.Log(validationResults.ErrorMessage);
-                return;
+                return Result<FXResponse>.Failure(validationResults.ErrorMessage);
             }
 
             try
@@ -44,11 +42,11 @@ namespace FXExchange.Services
                     fxInput.MoneyCurrency,
                     fxInput.Amount,
                     exchangeRates);
-                _logger.Log($"Exchanged amount: {exchangedAmount}");
+                return Result<FXResponse>.Success(new FXResponse { ExchangedAmount = exchangedAmount });
             }
             catch (Exception ex)
             {
-                _logger.Log($"Error: {ex.Message}");
+                return Result<FXResponse>.Failure("An error occurred while processing the request.");
             }
         }
     }

@@ -1,8 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using FXExchange.Core.Interfaces;
 
 namespace FXExchange.Infrastructure
 {
-    [ExcludeFromCodeCoverage]
     public class ConsoleLogger : ILogger
     {
         public void Log(string message)

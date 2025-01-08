@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using FXExchange.Models;
-using FXExchange.Services;
+using FXExchange.Core.Models;
+using FXExchange.Core.Services;
 using Moq.AutoMock;
 using Xunit;
 
@@ -24,7 +24,7 @@ namespace FXExchange.Tests.Services
             var input = new string[] { "EUR/USD" };
 
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -38,7 +38,7 @@ namespace FXExchange.Tests.Services
             var input = new string[] { "EURUSD", "100" };
 
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -52,7 +52,7 @@ namespace FXExchange.Tests.Services
             var input = new string[] { "EUR/USD", "invalid" };
 
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -66,7 +66,7 @@ namespace FXExchange.Tests.Services
             var input = new string[] { "AA/EUR", "100" };
 
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -80,7 +80,7 @@ namespace FXExchange.Tests.Services
             var input = new string[] { "EUR/BB", "100" };
 
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -94,7 +94,7 @@ namespace FXExchange.Tests.Services
             var input = new string[] { "EUR/USD", "100" };
 
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeTrue();
@@ -107,11 +107,11 @@ namespace FXExchange.Tests.Services
             // Arrange
             var input = new string[] { "EUR/USD", "100" };
             // Act
-            var result = _service.TryParse(input, out FXInput output);
+            var result = _service.TryParse(input, out FXRequest output);
 
             // Assert
             result.IsValid.Should().BeTrue();
-            output.Should().BeEquivalentTo(new FXInput
+            output.Should().BeEquivalentTo(new FXRequest
             {
                 MainCurrency = "EUR",
                 MoneyCurrency = "USD",

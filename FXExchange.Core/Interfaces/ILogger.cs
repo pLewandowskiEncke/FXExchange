@@ -1,4 +1,4 @@
-﻿namespace FXExchange.Infrastructure
+﻿namespace FXExchange.Core.Interfaces
 {
     public interface ILogger
     {

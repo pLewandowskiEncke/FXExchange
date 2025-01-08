@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace FXExchange.Models
+namespace FXExchange.Core.Models
 {
     [ExcludeFromCodeCoverage]
-    public record FXInput
+    public record FXRequest
     {
         public string MainCurrency { get; set; }
         public string MoneyCurrency { get; set; }

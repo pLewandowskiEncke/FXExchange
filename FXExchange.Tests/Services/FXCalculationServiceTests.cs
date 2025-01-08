@@ -1,5 +1,5 @@
-using FXExchange.Interfaces;
-using FXExchange.Services;
+using FXExchange.Core.Interfaces;
+using FXExchange.Core.Services;
 using FluentAssertions;
 using Xunit;
 

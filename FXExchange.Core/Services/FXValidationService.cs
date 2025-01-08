@@ -1,14 +1,14 @@
-﻿using FXExchange.Interfaces;
-using FXExchange.Models;
+﻿using FXExchange.Core.Interfaces;
+using FXExchange.Core.Models;
 
-namespace FXExchange.Services
+namespace FXExchange.Core.Services
 {
     public class FXValidationService : IFXValidationService
     {
         ///<inheritdoc />
-        public FXValidationResult TryParse(string[] input, out FXInput output)
+        public FXValidationResult TryParse(string[] input, out FXRequest output)
         {
-            output = new FXInput();
+            output = new FXRequest();
             if (input.Length != 2)
             {
                 return new FXValidationResult
@@ -32,7 +32,8 @@ namespace FXExchange.Services
             string mainCurrency = currencies[0];
             string moneyCurrency = currencies[1];
 
-            if (mainCurrency.Length != 3 || moneyCurrency.Length != 3) {
+            if (mainCurrency.Length != 3 || moneyCurrency.Length != 3)
+            {
                 return new FXValidationResult
                 {
                     IsValid = false,
@@ -49,7 +50,7 @@ namespace FXExchange.Services
                 };
             };
 
-            output = new FXInput
+            output = new FXRequest
             {
                 MainCurrency = mainCurrency,
                 MoneyCurrency = moneyCurrency,

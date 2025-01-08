@@ -1,6 +1,6 @@
-﻿using FXExchange.Interfaces;
+﻿using FXExchange.Core.Interfaces;
 
-namespace FXExchange.Services
+namespace FXExchange.Core.Services
 {
     ///<inheritdoc />
     public class FXCalculationService : IFXCalculationService

@@ -1,7 +1,7 @@
-﻿namespace FXExchange.Interfaces
+﻿namespace FXExchange.Core.Interfaces
 {
 
-    
+
     /// <summary>
     /// Represents a service for calculating exchanged amounts between two currencies based on exchange rates.
     /// </summary>
