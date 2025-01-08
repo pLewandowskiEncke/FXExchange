@@ -9,8 +9,7 @@
         /// <summary>
         /// Retrieves the exchange rates for the specified base currency.
         /// </summary>
-        /// <param name="baseCurrency">The base currency ISO code</param>
         /// <returns></returns>
-        Task<Dictionary<string, double>> GetRatesAsync(string baseCurrency);
+        Task<Dictionary<string, double>> GetRatesAsync();
     }
 }

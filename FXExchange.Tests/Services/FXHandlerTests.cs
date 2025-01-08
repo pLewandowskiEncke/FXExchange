@@ -41,12 +41,12 @@ namespace FXExchange.Tests.Services
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
-            var fxInput = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
+            var fxRequest = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
             _mocker.GetMock<IFXValidationService>()
-                .Setup(x => x.TryParse(args, out fxInput))
+                .Setup(x => x.TryParse(args, out fxRequest))
                 .Returns(new FXValidationResult { IsValid = true });
             _mocker.GetMock<IFXRatesRetrievalService>()
-                .Setup(x => x.GetRatesAsync(It.IsAny<string>()))
+                .Setup(x => x.GetRatesAsync())
                 .ThrowsAsync(new Exception("Service error"));
 
             // Act
@@ -54,7 +54,7 @@ namespace FXExchange.Tests.Services
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().Be("An error occurred while processing the request.");
+            result.ErrorMessage.Should().Be("Service error");
         }
 
         [Fact]
@@ -62,17 +62,17 @@ namespace FXExchange.Tests.Services
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
-            var fxInput = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
+            var fxRequest = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
             var exchangeRates = new Dictionary<string, double>
             {
                 { "EUR", 743.94 },
                 { "USD", 663.11 }
             };
             _mocker.GetMock<IFXValidationService>()
-                .Setup(x => x.TryParse(args, out fxInput))
+                .Setup(x => x.TryParse(args, out fxRequest))
                 .Returns(new FXValidationResult { IsValid = true });
             _mocker.GetMock<IFXRatesRetrievalService>()
-                .Setup(x => x.GetRatesAsync(It.IsAny<string>()))
+                .Setup(x => x.GetRatesAsync())
                 .ReturnsAsync(exchangeRates);
             _mocker.GetMock<IFXCalculationService>()
                 .Setup(x => x.Calculate("EUR", "USD", 100, exchangeRates))

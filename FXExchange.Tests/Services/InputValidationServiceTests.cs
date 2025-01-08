@@ -102,7 +102,7 @@ namespace FXExchange.Tests.Services
         }
 
         [Fact]
-        public void TryParse_ShouldConvertStringToFxInputModel_WhenInputIsValid()
+        public void TryParse_ShouldConvertStringToFxRequest_WhenInputIsValid()
         {
             // Arrange
             var input = new string[] { "EUR/USD", "100" };
