@@ -1,9 +1,5 @@
-﻿using FXExchange.Infrastructure;
-using FXExchange.Interfaces;
-using FXExchange.Services;
+﻿using FXExchange.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 
 class Program
 {
@@ -11,23 +7,21 @@ class Program
     {
         // Create a new instance of the service collection
         var services = new ServiceCollection();
-
-        // Add services to the collection
-        services.AddTransient<IFXHandler, FXHandler>();
-        services.AddTransient<IFXValidationService, FXValidationService>();
-        services.AddTransient<IFXCalculationService, FXCalculationService>();
-        services.AddTransient<IFXRatesRetrievalService, FXRatesRetrievalService>();
-        services.AddTransient<ILogger, ConsoleLogger>();
-
-        // Build the service provider
+        services.ConfigureServices();
         var serviceProvider = services.BuildServiceProvider();
 
-        // Resolve the service
-        var handler = serviceProvider.GetService<IFXHandler>();
-        if (handler == null)
+        var fxHandler = serviceProvider.GetRequiredService<IFXHandler>();
+        var logger = serviceProvider.GetRequiredService<ILogger>();
+
+        // Handle the operation
+        var result = await fxHandler.Handle(args);
+        if (result.IsSuccess)
         {
-            throw new InvalidOperationException("Service not found.");
+            logger.Log(result.Value.ExchangedAmount.ToString());
         }
-        await handler.Handle(args);
+        else
+        {
+            logger.Log(result.ErrorMessage);
+        }
     }
 }

@@ -1,10 +1,10 @@
-using FXExchange.Infrastructure;
-using FXExchange.Interfaces;
-using FXExchange.Models;
-using FXExchange.Services;
+using FXExchange.Core.Interfaces;
+using FXExchange.Core.Services;
+using FXExchange.Core.Models;
 using Moq;
 using Moq.AutoMock;
 using Xunit;
+using FluentAssertions;
 
 namespace FXExchange.Tests.Services
 {
@@ -25,22 +25,23 @@ namespace FXExchange.Tests.Services
             // Arrange
             var args = new string[] { "invalid", "input" };
             _mocker.GetMock<IFXValidationService>()
-                .Setup(x => x.TryParse(args, out It.Ref<FXInput>.IsAny))
+                .Setup(x => x.TryParse(args, out It.Ref<FXRequest>.IsAny))
                 .Returns(new FXValidationResult { IsValid = false, ErrorMessage = "Invalid input" });
 
             // Act
-            await _fxHandler.Handle(args);
+            var result = await _fxHandler.Handle(args);
 
             // Assert
-            _mocker.GetMock<ILogger>().Verify(x => x.Log("Invalid input"), Times.Once);
+            result.IsSuccess.Should().BeFalse();
+            result.ErrorMessage.Should().Be("Invalid input");
         }
 
         [Fact]
-        public async Task Handle_ShouldLogError_WhenExceptionIsThrown()
+        public async Task Handle_ShouldReturnError_WhenExceptionIsThrown()
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
-            var fxInput = new FXInput { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
+            var fxInput = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
             _mocker.GetMock<IFXValidationService>()
                 .Setup(x => x.TryParse(args, out fxInput))
                 .Returns(new FXValidationResult { IsValid = true });
@@ -49,18 +50,19 @@ namespace FXExchange.Tests.Services
                 .ThrowsAsync(new Exception("Service error"));
 
             // Act
-            await _fxHandler.Handle(args);
+            var result = await _fxHandler.Handle(args);
 
             // Assert
-            _mocker.GetMock<ILogger>().Verify(x => x.Log("Error: Service error"), Times.Once);
+            result.IsSuccess.Should().BeFalse();
+            result.ErrorMessage.Should().Be("An error occurred while processing the request.");
         }
 
         [Fact]
-        public async Task Handle_ShouldLogExchangedAmount_WhenValidationSucceeds()
+        public async Task Handle_ShouldLogReturnExchangedAmount_WhenValidationSucceeds()
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
-            var fxInput = new FXInput { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
+            var fxInput = new FXRequest { MainCurrency = "EUR", MoneyCurrency = "USD", Amount = 100 };
             var exchangeRates = new Dictionary<string, double>
             {
                 { "EUR", 743.94 },
@@ -77,10 +79,11 @@ namespace FXExchange.Tests.Services
                 .Returns(112.18);
 
             // Act
-            await _fxHandler.Handle(args);
+            var result = await _fxHandler.Handle(args);
 
             // Assert
-            _mocker.GetMock<ILogger>().Verify(x => x.Log("Exchanged amount: 112.18"), Times.Once);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.ExchangedAmount.Should().Be(112.18);
         }
     }
 }
