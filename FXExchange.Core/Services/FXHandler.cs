@@ -42,7 +42,7 @@ namespace FXExchange.Core.Services
             }
             catch (Exception ex)
             {
-                return Result<FXResponse>.Failure("An error occurred while processing the request.");
+                return Result<FXResponse>.Failure(ex.Message);
             }
         }
     }

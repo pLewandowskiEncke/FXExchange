@@ -54,7 +54,7 @@ namespace FXExchange.Tests.Services
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().Be("An error occurred while processing the request.");
+            result.ErrorMessage.Should().Be("Service error");
         }
 
         [Fact]
