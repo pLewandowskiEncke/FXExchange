@@ -1,4 +1,5 @@
-﻿using FXExchange.Core.Interfaces;
+﻿using FXExchange.ConsoleApp.Infrastructure;
+using FXExchange.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 class Program

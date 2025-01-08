@@ -1,6 +1,6 @@
 ﻿using FXExchange.Core.Interfaces;
 
-namespace FXExchange.Infrastructure
+namespace FXExchange.ConsoleApp.Infrastructure
 {
     public class ConsoleLogger : ILogger
     {
