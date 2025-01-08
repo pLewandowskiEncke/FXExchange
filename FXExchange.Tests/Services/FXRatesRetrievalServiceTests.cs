@@ -15,26 +15,10 @@ namespace FXExchange.Tests.Services
         }
 
         [Fact]
-        public async Task GetRatesAsync_ShouldThrowException_WhenBaseCurrencyIsNotDKK()
+        public async Task GetRatesAsync_ShouldReturnExchangeRates()
         {
-            // Arrange
-            var baseCurrency = "USD";
-
             // Act
-            Func<Task> act = async () => await _service.GetRatesAsync(baseCurrency);
-
-            // Assert
-            await act.Should().ThrowAsync<Exception>().WithMessage("Unsupported base currency");
-        }
-
-        [Fact]
-        public async Task GetRatesAsync_ShouldReturnExchangeRates_WhenBaseCurrencyIsDKK()
-        {
-            // Arrange
-            var baseCurrency = "DKK";
-
-            // Act
-            var result = await _service.GetRatesAsync(baseCurrency);
+            var result = await _service.GetRatesAsync();
 
             // Assert
             result.Should().ContainKey("EUR").WhoseValue.Should().Be(743.94);

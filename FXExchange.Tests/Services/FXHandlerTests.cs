@@ -46,7 +46,7 @@ namespace FXExchange.Tests.Services
                 .Setup(x => x.TryParse(args, out fxRequest))
                 .Returns(new FXValidationResult { IsValid = true });
             _mocker.GetMock<IFXRatesRetrievalService>()
-                .Setup(x => x.GetRatesAsync(It.IsAny<string>()))
+                .Setup(x => x.GetRatesAsync())
                 .ThrowsAsync(new Exception("Service error"));
 
             // Act
@@ -72,7 +72,7 @@ namespace FXExchange.Tests.Services
                 .Setup(x => x.TryParse(args, out fxRequest))
                 .Returns(new FXValidationResult { IsValid = true });
             _mocker.GetMock<IFXRatesRetrievalService>()
-                .Setup(x => x.GetRatesAsync(It.IsAny<string>()))
+                .Setup(x => x.GetRatesAsync())
                 .ReturnsAsync(exchangeRates);
             _mocker.GetMock<IFXCalculationService>()
                 .Setup(x => x.Calculate("EUR", "USD", 100, exchangeRates))

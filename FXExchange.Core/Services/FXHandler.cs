@@ -7,7 +7,6 @@ namespace FXExchange.Core.Services
     ///<inheritdoc />
     public class FXHandler : IFXHandler
     {
-        const string BaseCurrency = "DKK";
         private readonly IFXValidationService _fxValidationService;
         private readonly IFXCalculationService _fxCalculationService;
         private readonly IFXRatesRetrievalService _fxRatesRetrievalService;
@@ -33,7 +32,7 @@ namespace FXExchange.Core.Services
 
             try
             {
-                var exchangeRates = await _fxRatesRetrievalService.GetRatesAsync(BaseCurrency);
+                var exchangeRates = await _fxRatesRetrievalService.GetRatesAsync();
                 double exchangedAmount = _fxCalculationService.Calculate(
                     fxRequest.MainCurrency,
                     fxRequest.MoneyCurrency,
