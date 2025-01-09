@@ -13,14 +13,6 @@ class Program
         var fxHandler = serviceProvider.GetRequiredService<IFXHandler>();        
 
         // Handle the operation
-        var result = await fxHandler.Handle(args);
-        if (result.IsSuccess)
-        {
-            Console.WriteLine(result.Value.ExchangedAmount);
-        }
-        else
-        {
-            Console.WriteLine(result.ErrorMessage);
-        }
+        await fxHandler.Handle(args);
     }
 }

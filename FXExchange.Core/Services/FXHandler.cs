@@ -10,24 +10,28 @@ namespace FXExchange.Core.Services
         private readonly IFXValidationService _fxValidationService;
         private readonly IFXCalculationService _fxCalculationService;
         private readonly IFXRatesRetrievalService _fxRatesRetrievalService;
+        private readonly ILogger _logger;
 
         public FXHandler(
             IFXValidationService fxValidationService,
             IFXCalculationService fxCalculationService,
-            IFXRatesRetrievalService fxRatesRetrievalService)
+            IFXRatesRetrievalService fxRatesRetrievalService,
+            ILogger logger)
         {
             _fxValidationService = fxValidationService;
             _fxCalculationService = fxCalculationService;
             _fxRatesRetrievalService = fxRatesRetrievalService;
+            _logger = logger;
         }
 
         ///<inheritdoc />
-        public async Task<Result<FXResponse>> Handle(string[] args)
+        public async Task Handle(string[] args)
         {
             var validationResults = _fxValidationService.TryParse(args, out FXRequest fxRequest);
             if (!validationResults.IsValid)
             {
-                return Result<FXResponse>.Failure(validationResults.ErrorMessage);
+                _logger.Log(validationResults.ErrorMessage);
+                return;
             }
 
             try
@@ -38,11 +42,11 @@ namespace FXExchange.Core.Services
                     fxRequest.MoneyCurrency,
                     fxRequest.Amount,
                     exchangeRates);
-                return Result<FXResponse>.Success(new FXResponse { ExchangedAmount = exchangedAmount });
+                _logger.Log(exchangedAmount.ToString());
             }
             catch (Exception ex)
             {
-                return Result<FXResponse>.Failure(ex.Message);
+                _logger.Log($"Error: {ex.Message}");
             }
         }
     }
