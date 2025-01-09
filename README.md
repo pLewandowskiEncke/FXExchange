@@ -14,15 +14,22 @@ The application is built using clean code principles to ensure maintainability a
 ### Installation
 
 1. Clone the repository:
-git clone https://github.com/yourusername/FXExchange.git cd FXExchange
-2. Open the solution in Visual Studio:
-3. Restore the dependencies:
+
+`git clone https://github.com/pLewandowskiEncke/FXExchange.git`
+
+2. Open the solution in Visual Studio: `FXExchange.sln`
+3. Restore the dependencies: Visual Studio should automatically restore the required NuGet packages when the solution is opened. If not, they can manually restore the packages by right-clicking on the solution in Solution Explorer and selecting "Restore NuGet Packages" or by running the following command in the terminal:
+
+
+`dotnet restore`
 
 ### Running the Application
 
 1. Navigate to the `FXExchange.ConsoleApp` project:
-2. Run the application:
-3. Follow the prompts to enter the base currency, target currency, and amount to be exchanged.
+2. Build the Solution: Build the solution by selecting "Build Solution" from the "Build" menu or by pressing Ctrl+Shift+B.
+3. Run the executable `FXExchange.exe` with provided the base currency, target currency, and amount to be exchanged:
+
+`.\FXExchange.ConsoleApp\bin\Debug\net8.0\Exchange EUR/DKK 1000`
 
 ## Project Structure Details
 
