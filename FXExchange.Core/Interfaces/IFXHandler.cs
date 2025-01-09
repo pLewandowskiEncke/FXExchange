@@ -1,8 +1,6 @@
-﻿using FXExchange.Core.Models;
-
-namespace FXExchange.Core.Interfaces
+﻿namespace FXExchange.Core.Interfaces
 {
-    
+
     /// <summary>
     /// Represents a service for handling foreign exchange operations.
     /// </summary>
@@ -12,6 +10,6 @@ namespace FXExchange.Core.Interfaces
         /// Handles the foreign exchange operation for the specified currency pair and amount.
         /// </summary>
         /// <param name="args">The arguments for the operation containing currency pair and the amount</param>
-        Task<Result<FXResponse>> Handle(string[] args);
+        Task Handle(string[] args);
     }
 }

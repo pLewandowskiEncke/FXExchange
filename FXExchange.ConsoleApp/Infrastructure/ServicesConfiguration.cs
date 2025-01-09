@@ -12,6 +12,7 @@ namespace FXExchange.ConsoleApp.Infrastructure
             services.AddTransient<IFXValidationService, FXValidationService>();
             services.AddTransient<IFXCalculationService, FXCalculationService>();
             services.AddTransient<IFXRatesRetrievalService, FXRatesRetrievalService>();
+            services.AddTransient<ILogger, ConsoleLogger>();
         }
     }
 }

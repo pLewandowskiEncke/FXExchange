@@ -1,10 +1,9 @@
 using FXExchange.Core.Interfaces;
-using FXExchange.Core.Services;
 using FXExchange.Core.Models;
+using FXExchange.Core.Services;
 using Moq;
 using Moq.AutoMock;
 using Xunit;
-using FluentAssertions;
 
 namespace FXExchange.Tests.Services
 {
@@ -29,15 +28,14 @@ namespace FXExchange.Tests.Services
                 .Returns(new FXValidationResult { IsValid = false, ErrorMessage = "Invalid input" });
 
             // Act
-            var result = await _fxHandler.Handle(args);
+            await _fxHandler.Handle(args);
 
             // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().Be("Invalid input");
+            _mocker.GetMock<ILogger>().Verify(x => x.Log("Invalid input"), Times.Once);
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnError_WhenExceptionIsThrown()
+        public async Task Handle_ShouldLogError_WhenExceptionIsThrown()
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
@@ -50,15 +48,14 @@ namespace FXExchange.Tests.Services
                 .ThrowsAsync(new Exception("Service error"));
 
             // Act
-            var result = await _fxHandler.Handle(args);
+            await _fxHandler.Handle(args);
 
             // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().Be("Service error");
+            _mocker.GetMock<ILogger>().Verify(x => x.Log("Error: Service error"), Times.Once);
         }
 
         [Fact]
-        public async Task Handle_ShouldLogReturnExchangedAmount_WhenValidationSucceeds()
+        public async Task Handle_ShouldLogExchangedAmount_WhenValidationSucceeds()
         {
             // Arrange
             var args = new string[] { "EUR/USD", "100" };
@@ -79,11 +76,10 @@ namespace FXExchange.Tests.Services
                 .Returns(112.18);
 
             // Act
-            var result = await _fxHandler.Handle(args);
+            await _fxHandler.Handle(args);
 
             // Assert
-            result.IsSuccess.Should().BeTrue();
-            result.Value.ExchangedAmount.Should().Be(112.18);
+            _mocker.GetMock<ILogger>().Verify(x => x.Log("112.18"), Times.Once);
         }
     }
 }
