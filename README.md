@@ -2,7 +2,7 @@
 
 ## Overview
 
-The FX Exchange Console Application is a simple tool for converting currency amounts based on current exchange rates. 
+The FX Exchange Console Application is a simple tool for converting currency amounts based on hardcoded exchange rates based on DKK. 
 The application is built using clean code principles to ensure maintainability and scalability ;)
 
 ## Getting Started
