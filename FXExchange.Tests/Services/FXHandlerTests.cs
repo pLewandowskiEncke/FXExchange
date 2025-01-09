@@ -3,17 +3,20 @@ using FXExchange.Core.Models;
 using FXExchange.Core.Services;
 using Moq;
 using Moq.AutoMock;
+using System.Globalization;
 using Xunit;
 
 namespace FXExchange.Tests.Services
 {
-    public class FXHandlerTests
+    public class FXHandlerTests : IDisposable
     {
+        private readonly CultureInfo _originalCulture;
         private readonly AutoMocker _mocker;
         private readonly FXHandler _fxHandler;
 
         public FXHandlerTests()
         {
+            _originalCulture = CultureInfo.CurrentCulture;
             _mocker = new AutoMocker();
             _fxHandler = _mocker.CreateInstance<FXHandler>();
         }
@@ -74,12 +77,19 @@ namespace FXExchange.Tests.Services
             _mocker.GetMock<IFXCalculationService>()
                 .Setup(x => x.Calculate("EUR", "USD", 100, exchangeRates))
                 .Returns(112.18);
+            CultureInfo.CurrentCulture = new CultureInfo("en-EN");
 
             // Act
             await _fxHandler.Handle(args);
 
             // Assert
             _mocker.GetMock<ILogger>().Verify(x => x.Log("112.18"), Times.Once);
+        }
+
+        public void Dispose()
+        {
+            // Restore the original culture after the test
+            CultureInfo.CurrentCulture = _originalCulture;
         }
     }
 }
