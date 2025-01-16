@@ -26,8 +26,8 @@ namespace FXExchange.Core.Services
             double mainToBase = exchangeRates[mainCurrency] / 100;
             double moneyToBase = exchangeRates[moneyCurrency] / 100;
 
-            double amountInDKK = amount * mainToBase;
-            double exchangedAmount = amountInDKK / moneyToBase;
+            double amountInBaseCurrency = amount * mainToBase;
+            double exchangedAmount = amountInBaseCurrency / moneyToBase;
 
             return Math.Round(exchangedAmount, 4);
         }
